@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+  },
+  "dependencies": {
+    "twitter": "^1.7.1"
+  },
+  "scripts": {
+  }
+}
