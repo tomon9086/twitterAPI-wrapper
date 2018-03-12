@@ -18,7 +18,11 @@ module.exports = {
 	postStatus: async (status, medias) => {
 		let media_ids = undefined
 		if(medias instanceof Array) media_ids = medias.join(",")
+		if(typeof medias === "string") media_ids = medias
+		if(!media_ids) media_ids = undefined
 		return await client.post("statuses/update", {
+			status,
+			media_ids
 		})
 	},
 	postMedia: async (buffer) => {
