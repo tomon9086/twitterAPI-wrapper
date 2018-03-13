@@ -1,5 +1,18 @@
 const client = require("./twitter.js")
 
+/**
+ *	Put the file "../token.js", and write as below
+ *
+ *	module.exports = {
+ *		twitter: {
+ *			consumerKey: "*************************",
+ *			consumerSecret: "**************************************************",
+ *			accessToken: "**************************************************",
+ *			accessTokenSecret: "*********************************************"
+ *		}
+ *	}
+ */
+
 module.exports = {
 	getTimeline: async (user_id, count = 1, exclude_replies = true) => {
 		return await client.get("statuses/user_timeline", {
@@ -26,9 +39,9 @@ module.exports = {
 	 */
 	postStatus: async (status, medias, in_reply_to_status_id) => {
 		if(typeof medias === "string") in_reply_to_status_id = medias
-		const media_ids = medias instanceof Array && !medias.join(",") ? medias.join(",") : undefined
+		const media_ids = medias instanceof Array && medias.join(",") ? medias.join(",") : undefined
 		// if(typeof medias === "string") media_ids = medias
-		if(isNaN(Number(in_reply_to_status_id))) return
+		if(in_reply_to_status_id && isNaN(Number(in_reply_to_status_id))) return
 		return await client.post("statuses/update", {
 			status,
 			media_ids,
@@ -40,24 +53,24 @@ module.exports = {
 			media: buffer
 		})
 	},
-	postMP4: async function(buffer) => {
+	postMP4: async function(buffer) {
 		return await this._postMedia(buffer, "video/mp4")
 	},
-	postGif: async function(buffer) => {
+	postGif: async function(buffer) {
 		return await this._postMedia(buffer, "image/gif")
 	},
 	_postMedia: async (buffer, media_type) => {
 		const makePost = async (opt) => {
 			return await client.post("media/upload", opt)
 		}
-		const media_id = await makePost({
+		const media_id = (await makePost({
 			command: "INIT",
 			total_bytes: buffer.length,
 			media_type,
-		})
+		})).media_id_string
 		await makePost({
 			command: "APPEND",
-			media_id
+			media_id,
 			media: buffer,
 			segment_index: 0
 		})

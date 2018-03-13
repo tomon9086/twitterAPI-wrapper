@@ -1,17 +1,6 @@
 const Twitter = require("twitter")
 
 const token = require("../token.js")
-/*
-token.js
-module.exports = {
-	twitter: {
-		consumerKey: "*************************",
-		consumerSecret: "**************************************************",
-		accessToken: "**************************************************",
-		accessTokenSecret: "*********************************************"
-	}
-}
-*/
 
 module.exports = new Twitter({
 	consumer_key: token.twitter.consumerKey,
