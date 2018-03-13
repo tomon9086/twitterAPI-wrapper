@@ -28,6 +28,12 @@ module.exports = {
 			exclude_replies
 		})
 	},
+	getHomeTimeline: async (count = 1, exclude_replies = true) => {
+		return await client.get("statuses/home_timeline", {
+			count,
+			exclude_replies
+		})
+	},
 	/**
 	 *	postStatus()
 	 *	
