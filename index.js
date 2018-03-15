@@ -34,6 +34,12 @@ module.exports = {
 			exclude_replies
 		})
 	},
+	search: async (q, count = 1) => {
+		return await client.get("search/tweets", {
+			q,
+			count
+		})
+	}
 	/**
 	 *	postStatus()
 	 *	
