@@ -19,6 +19,8 @@ module.exports = {
 			user_id,
 			count,
 			exclude_replies
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	getTimelineByScreenName: async (screen_name, count = 1, exclude_replies = true) => {
@@ -26,18 +28,24 @@ module.exports = {
 			screen_name,
 			count,
 			exclude_replies
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	getHomeTimeline: async (count = 1, exclude_replies = true) => {
 		return await client.get("statuses/home_timeline", {
 			count,
 			exclude_replies
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	search: async (q, count = 1) => {
 		return await client.get("search/tweets", {
 			q,
 			count
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	/**
@@ -58,22 +66,32 @@ module.exports = {
 			status,
 			media_ids,
 			in_reply_to_status_id
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	postImage: async (buffer) => {
 		return await client.post("media/upload", {
 			media: buffer
+		}).catch((err) => {
+			console.error(err)
 		})
 	},
 	postMP4: async function(buffer) {
-		return await this._postMedia(buffer, "video/mp4")
+		return await this._postMedia(buffer, "video/mp4").catch((err) => {
+			console.error(err)
+		})
 	},
 	postGif: async function(buffer) {
-		return await this._postMedia(buffer, "image/gif")
+		return await this._postMedia(buffer, "image/gif").catch((err) => {
+			console.error(err)
+		})
 	},
 	_postMedia: async (buffer, media_type) => {
 		const makePost = async (opt) => {
-			return await client.post("media/upload", opt)
+			return await client.post("media/upload", opt).catch((err) => {
+				console.error(err)
+			})
 		}
 		const media_id = (await makePost({
 			command: "INIT",
