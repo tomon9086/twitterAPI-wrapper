@@ -14,36 +14,40 @@ const client = require("./twitter.js")
  */
 
 module.exports = {
-	getTimeline: async (user_id, count = 1, exclude_replies = true) => {
+	getTimeline: async (user_id, count = 1, exclude_replies = true, other_opt) => {
 		return await client.get("statuses/user_timeline", {
 			user_id,
 			count,
-			exclude_replies
+			exclude_replies,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
 	},
-	getTimelineByScreenName: async (screen_name, count = 1, exclude_replies = true) => {
+	getTimelineByScreenName: async (screen_name, count = 1, exclude_replies = true, other_opt) => {
 		return await client.get("statuses/user_timeline", {
 			screen_name,
 			count,
-			exclude_replies
+			exclude_replies,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
 	},
-	getHomeTimeline: async (count = 1, exclude_replies = true) => {
+	getHomeTimeline: async (count = 1, exclude_replies = true, other_opt) => {
 		return await client.get("statuses/home_timeline", {
 			count,
-			exclude_replies
+			exclude_replies,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
 	},
-	search: async (q, count = 1) => {
+	search: async (q, count = 1, other_opt) => {
 		return await client.get("search/tweets", {
 			q,
-			count
+			count,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
@@ -57,7 +61,7 @@ module.exports = {
 	 *	
 	 *	@return Object tweet?
 	 */
-	postStatus: async (status, medias, in_reply_to_status_id) => {
+	postStatus: async (status, medias, in_reply_to_status_id, other_opt) => {
 		if(typeof medias === "string") in_reply_to_status_id = medias
 		const media_ids = medias instanceof Array && medias.join(",") ? medias.join(",") : undefined
 		// if(typeof medias === "string") media_ids = medias
@@ -65,14 +69,16 @@ module.exports = {
 		return await client.post("statuses/update", {
 			status,
 			media_ids,
-			in_reply_to_status_id
+			in_reply_to_status_id,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
 	},
-	postImage: async (buffer) => {
+	postImage: async (buffer, other_opt) => {
 		return await client.post("media/upload", {
-			media: buffer
+			media: buffer,
+			...other_opt
 		}).catch((err) => {
 			console.error(err)
 		})
